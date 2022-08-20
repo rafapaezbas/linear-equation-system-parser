@@ -1,0 +1,34 @@
+cabal-version:      2.4
+name:               linear-equations-system-parser
+version:            0.1.0.0
+author:             rafapaezbas
+maintainer:         rpaezbas@rpaezbas.com
+
+extra-source-files: CHANGELOG.md
+
+library
+    exposed-modules:  SystemParser
+    build-depends:    base ^>=4.14.3.0,
+                      megaparsec
+    hs-source-dirs:   src
+    default-language: Haskell2010
+
+executable linear-equations-system-parser
+    main-is:          Main.hs
+    build-depends:
+        base ^>=4.14.3.0,
+        linear-equations-system-parser,
+        megaparsec
+
+    hs-source-dirs:   app
+    default-language: Haskell2010
+
+Test-Suite test-system-parser
+    type:                exitcode-stdio-1.0
+    hs-source-dirs:      test
+    main-is:             SystemParserTest.hs
+    build-depends:       base >=4.14 && <4.15,
+                         linear-equations-system-parser,
+                         megaparsec,
+                         HUnit
+
