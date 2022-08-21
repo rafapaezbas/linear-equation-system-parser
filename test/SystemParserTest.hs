@@ -13,9 +13,18 @@ instance Eq Equation where
 emptyTerm :: Term
 emptyTerm = Term 0 ' '
 
+emptyEquation :: Equation
+emptyEquation = Equation [] 0
+
 parseTerm :: String -> Term
 parseTerm s = case (parse term "" s) of Left e -> emptyTerm
                                         Right t -> t
+
+parseEquation :: String -> Equation
+parseEquation s = case (parse equation "" s) of Left e -> emptyEquation
+                                                Right e -> e
+
+-- Terms
 
 testA :: Test
 testA = TestCase (assertEqual "Terms equality" (Term 1 'x') (Term 1 'x'))
@@ -44,6 +53,20 @@ testH = TestCase (assertEqual "Invalid term (missing unknown)" (parseTerm "+1") 
 testI :: Test
 testI = TestCase (assertEqual "Invalid term (missing coefficient)" (parseTerm "+x") emptyTerm)
 
+-- Equations
+
+testJ :: Test
+testJ = TestCase (assertEqual "Valid equation (one term)" (parseEquation "+1x=3;") (Equation [(Term 1 'x')] 3))
+
+testK :: Test
+testK = TestCase (assertEqual "Valid equation (two terms)" (parseEquation "+1x-2y=3;") (Equation [(Term 1 'x'), (Term (-2) 'y')] 3))
+
+testL :: Test
+testL = TestCase (assertEqual "Invalid equation (one terms)" (parseEquation "x-2y=3;") emptyEquation)
+
+testM :: Test
+testM = TestCase (assertEqual "Invalid equation (one terms)" (parseEquation "1x2y=3;") emptyEquation)
+
 tests :: Test
 tests = TestList [TestLabel "testA" testA,
                   TestLabel "testB" testB,
@@ -53,7 +76,11 @@ tests = TestList [TestLabel "testA" testA,
                   TestLabel "testF" testF,
                   TestLabel "testG" testG,
                   TestLabel "testH" testH,
-                  TestLabel "testI" testI]
+                  TestLabel "testI" testI,
+                  TestLabel "testJ" testJ,
+                  TestLabel "testK" testK,
+                  TestLabel "testL" testL,
+                  TestLabel "testM" testM]
 
 main :: IO ()
 main = do

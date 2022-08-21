@@ -29,6 +29,6 @@ equation :: Parser Equation
 equation  = do
   t <- some term
   _ <- char '='
-  v <- digitChar
+  v <- some digitChar
   _ <- char ';'
-  return $ Equation t ((read [v])::Int)
+  return $ Equation t ((read v)::Int)
